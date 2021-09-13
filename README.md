@@ -3,4 +3,6 @@
  
  Theoretical developments & equations can be found on Combustion TeX file.
  
- To add: Chemical equation balancer, Molar/mass fraction calculator, Adiabatic flame temperature calculator.
+ Tools: Equivalence ratio calculator, Combustion reaction balancing.
+ 
+ To add: Molar/mass fraction calculator, Adiabatic flame temperature calculator.
