@@ -3,4 +3,4 @@
  
  Theoretical developments & equations can be found on Combustion TeX file.
  
- To add: Adiabatic flame temperature.
+ To add: Chemical equation balancer, Molar/mass fraction calculator, Adiabatic flame temperature calculator.
