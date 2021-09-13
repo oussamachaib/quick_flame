@@ -16,16 +16,19 @@ WO=16
 WN=14
 
 # fuel mass or mass flow rate
-mfuel=4
-# air mass or mass flow rate 
-mox=75
+mfuel=.44
+# oxidizer mass or mass flow rate (air or oxygen-enriched air)
+mox=10.6
 
-# hydrocarbon structure 
-n=4
-m=10
+# hydrocarbon structure (format: CnHm)
+n=1
+m=4
+
+# air mixture (default: 3.76, pure oxy: 0)
+beta=0
 
 # mixture fraction at stoichiometry
-alphas=(n*WC+m*WH)/((13/2)*(2*WO+3.76*2*WN))
+alphas=(n*WC+m*WH)/((n+m/4)*(2*WO+beta*2*WN))
 
 # current mixture fraction
 alpha=mfuel/mox
