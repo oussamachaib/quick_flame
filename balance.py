@@ -19,6 +19,7 @@ m=10
 beta=3.76
 p=n+m/4
 
+# balancing equation
 fig=plt.figure(figsize=(10,1))
 plt.axis('off')
 if(beta!=0):
@@ -33,7 +34,6 @@ else:
          +u' \u27F6 '
          +rf'${n}\,CO_2 + {m/2:.2}\,H_2O$'
          ,fontsize=14)
-
 
 plt.show()
 plt.tight_layout()

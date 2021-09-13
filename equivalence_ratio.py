@@ -30,7 +30,7 @@ beta=0
 # mixture fraction at stoichiometry
 alphas=(n*WC+m*WH)/((n+m/4)*(2*WO+beta*2*WN))
 
-# current mixture fraction
+# local mixture fraction
 alpha=mfuel/mox
 
 # equivalence ratio
