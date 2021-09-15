@@ -34,7 +34,7 @@ p=n+m/4
 # equivalence ratio
 phi=1
 
-# stoichiometric factors
+# mass fractions
 column_names=["nk_reac [ ]","Yk_reac [ ]","nk_prod [ ]","Yk_prod [ ]","M [g/mol]"]
 index_names=[f"C{n2}H{m}","O2","N2","CO2","H2O"]
 mf=pd.DataFrame(data=zeros((len(index_names),len(column_names))),index=index_names,columns=column_names)
@@ -51,12 +51,27 @@ else:
     mf.iloc[:,2]=[phi-1,0,p*beta,n,m/2]    
 
 # molar mass
-m_tot=sum(mf.iloc[:,-1]*mf.iloc[:,0])
+M_tot=sum(mf.iloc[:,-1]*mf.iloc[:,0])
 
 # calculating mass fractions
-mf.iloc[:,1]=mf.iloc[:,0]*mf.iloc[:,-1]/m_tot
-mf.iloc[:,3]=mf.iloc[:,2]*mf.iloc[:,-1]/m_tot
+mf.iloc[:,1]=mf.iloc[:,0]*mf.iloc[:,-1]/M_tot
+mf.iloc[:,3]=mf.iloc[:,2]*mf.iloc[:,-1]/M_tot
 
+# molar fractions
+molf=mf.copy()
+molf.columns=["nk_reac [ ]","Xk_reac [ ]","nk_prod [ ]","Xk_prod [ ]","M [g/mol]"]
+molf.index=[f"C{n2}H{m}","O2","N2","CO2","H2O"]
+
+# calculating molar fractions
+molf.iloc[:,1]=molf.iloc[:,0]/sum(molf.iloc[:,0])
+molf.iloc[:,3]=molf.iloc[:,2]/sum(molf.iloc[:,2])
+
+print('Mass fraction table: \n')
+print(mf)
+print('\n')
+print('Molar fraction table: \n')
+print(molf)
+print('\n')
 
 
 
