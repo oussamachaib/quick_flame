@@ -32,7 +32,7 @@ beta=3.76
 p=n+m/4
 
 # equivalence ratio
-phi=1
+phi=0.6
 
 # mass fractions
 column_names=["nk_reac [ ]","Yk_reac [ ]","nk_prod [ ]","Yk_prod [ ]","M [g/mol]"]
