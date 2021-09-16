@@ -10,6 +10,7 @@ from pylab import*
 import matplotlib as plt
 import pandas as pd
 from scipy import interpolate
+from sklearn.linear_model import LinearRegression
 
 close('all')
 
@@ -261,10 +262,10 @@ for phi in phi_range:
 
 # Hyp 3: using tabulated sensible enthalpy
 
-T0=298
-i=0
-index_sh=[298.15,600,2200,2300,2400,2500,2600,2700]
-sh=pd.DataFrame(index=index_sh,columns=[f"C_{n2}H_{m}","O2","CO2","H2O","N2"])
+T0=298.15
+
+temps=[298.15,600,2200,2300,2400,2500,2600,2700]
+sh=pd.DataFrame(index=temps,columns=[f"C_{n2}H_{m}","O2","CO2","H2O","N2"])
 sh.iloc[0,:]=zeros(5)
 sh.iloc[1,:]=[13.1,9.2,12.9,10.5,9.9]
 sh.iloc[2,:]=[142.7,66.8,103.5,83.1,63.4]
@@ -274,12 +275,13 @@ sh.iloc[5,:]=[172,78.3,122,99.1,74.3]
 sh.iloc[6,:]=[181.9,82.3,128.1,104.5,78]
 sh.iloc[7,:]=[191.9,86.1,134.2,110,81.6]
 
-ffuel=interpolate.interp1d(index_sh, sh[f"C_{n2}H_{m}"])
-fO2=interpolate.interp1d(index_sh, sh["O2"])
-fCO2=interpolate.interp1d(index_sh, sh["CO2"])
-fH20=interpolate.interp1d(index_sh, sh["H2O"])
-fN2=interpolate.interp1d(index_sh, sh["N2"])
+ffuel=interpolate.interp1d(temps, sh[f"C_{n2}H_{m}"])
+fO2=interpolate.interp1d(temps, sh["O2"])
+fCO2=interpolate.interp1d(temps, sh["CO2"])
+fH2O=interpolate.interp1d(temps, sh["H2O"])
+fN2=interpolate.interp1d(temps, sh["N2"])
 
+i=0
 
 for phi in phi_range:
     # mass fractions
@@ -306,13 +308,34 @@ for phi in phi_range:
     mf.iloc[:,3]=mf.iloc[:,2]*mf.iloc[:,-1]/M_tot
     
     mf["dh0_f [J/kg]"]=[-4.7e06,0,0,-8.94e06,-1.35e07]
-    mf["Cp(T0) [J/kg.K]"]=[4500,1087.5,1164.285714,1236.363636,2288.888889]
+    mf["Cp(T0) [J/kg.K]"]=[2237.5,915.625,1039.285714,843.1818182,1866.666667]
+
+    hsfuel=ones(len(temps))
+    hsO2=ones(len(temps))
+    hsCO2=ones(len(temps))
+    hsH2O=ones(len(temps))
+    hsN2=ones(len(temps))    
+    for i in range(1,len(temps)+1):
+        hsfuel[i-1]=trapz(ffuel(temps[0:i]),temps[0:i])
+        hsO2[i-1]=trapz(fO2(temps[0:i]),temps[0:i])
+        hsCO2[i-1]=trapz(fCO2(temps[0:i]),temps[0:i])
+        hsH2O[i-1]=trapz(fH2O(temps[0:i]),temps[0:i])
+        hsN2[i-1]=trapz(fN2(temps[0:i]),temps[0:i])
+        
+    rhs=pd.DataFrame(index=temps,columns=[f"C_{n2}H_{m}","O2","CO2","H2O","N2"])
+    rhs[f"C_{n2}H_{m}"]=hsfuel*mf.iloc[0,4]*mf.iloc[0,3]
+    rhs["O2"]=hsO2*mf.iloc[1,4]*mf.iloc[1,3]
+    rhs["N2"]=hsN2*mf.iloc[2,4]*mf.iloc[2,3]
+    rhs["CO2"]=hsCO2*mf.iloc[3,4]*mf.iloc[3,3]
+    rhs["H2O"]=hsN2*mf.iloc[4,4]*mf.iloc[4,3]
     
-    T2[3].append((sum(mf.iloc[:,1]*mf["dh0_f [J/kg]"])-sum(mf.iloc[:,3]*mf["dh0_f [J/kg]"]))/(sum(mf.iloc[:,3]*mf["Cp(T0) [J/kg.K]"]))+T0)
-    i=i+1
+    rhs["sum"]=rhs.sum(axis=1)
+    
+    frhs=interpolate.interp1d(rhs["sum"],temps)
+    T2[3].append(frhs((sum(mf.iloc[:,1]*mf["dh0_f [J/kg]"])-sum(mf.iloc[:,3]*mf["dh0_f [J/kg]"]))))
 
 figure(3)
-for i in range(3):
+for i in range(4):
     plot(phi_range,T2[i])
     
 legend(["Hyp 0","Hyp 1","Hyp 2","Hyp 3"],bbox_to_anchor=(1,1), loc="upper left")
@@ -322,10 +345,3 @@ xlabel(r'$\phi$')
 ylabel(r'$T_2$')
 suptitle('Adiabatic flame temperature')
 tight_layout()  
-    
-    
-   
-    
-    
-    
-    
