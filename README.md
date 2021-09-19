@@ -12,4 +12,4 @@
   
   <img width="600" alt="Screenshot 2021-09-15 at 16 26 24" src="https://user-images.githubusercontent.com/88498674/133452271-a022e689-5a8c-4114-b3bf-191d6af8e83b.png">
  
- <b>To add:</b> Adiabatic flame temperature calculator.
+ <b>To add:</b> Adiabatic flame temperature calculator -- edit 23/09: will depend on heat capacity hypothesis... examples in practice/TD2
