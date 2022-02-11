@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 
 # hydrocarbon structure (format: CnHm)
 # usually, m = 2n+2
-n=1
-m=4
+n=8
+m=18
 if(n==1):
     n2=""
 else:
@@ -27,13 +27,13 @@ fig=plt.figure(figsize=(10,1))
 plt.axis('off')
 if(beta!=0):
     plt.text(0, 0.5,
-         rf'Balanced equation:   $C_{{{n2}}}H_{{{m}}} + {p:.2}\,(O_2+{beta}\,N_2)$'
+         rf'Balanced equation:   $C_{{{n2}}}H_{{{m}}} + {p:.3}\,(O_2+{beta}\,N_2)$'
          +u' \u27F6 '
          +rf'${n}\,CO_2 + {m/2:.2}\,H_2O + {beta}\,({p})\,N_2$'
          ,fontsize=14)
 else:
     plt.text(0, 0.5,
-         rf'Balanced equation:   $C_{{{n}}}H_{{{m}}} + {p:.2}\,(O_2)$'
+         rf'Balanced equation:   $C_{{{n}}}H_{{{m}}} + {p:.3}\,(O_2)$'
          +u' \u27F6 '
          +rf'${n}\,CO_2 + {m/2:.2}\,H_2O$'
          ,fontsize=14)

@@ -19,8 +19,8 @@ MO=16
 
 # hydrocarbon structure (format: CnHm)
 # usually, m = 2n+2
-n=1
-m=4
+n=8
+m=18
 if(n==1):
     n2=""
 else:
